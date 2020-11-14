@@ -1,0 +1,8 @@
+<div {% if id is defined %}id="{{ id }}"{% endif %} class="card{% if class is defined %} {{ class }}{% endif %}" data-code="{{ code }}">
+    <div class="overlay"></div>
+    <div class="center">
+        <div class="image-cropper">
+            <img src="{{ asset('build/images/cards/' ~ code ~ '.png') }}" title="loader" alt="loader"/>
+        </div>
+    </div>
+</div>

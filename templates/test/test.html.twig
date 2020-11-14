@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('cardManager') }}
+{% endblock %}
+
+{% block body %}
+    {# Cartes de référence #}
+    <div id="to-match" class="card-container">
+        {% for carte in cartesReference %}
+            <div data-reference="{{ carte.ordre }}" class="card-pile">
+                {% include('test/card.html.twig') with {'code': carte.typeCode} %}
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Emplacement sous les cartes de référence #}
+    <div id="matchers" class="card-container" style="display:none">
+        {% for carte in cartesReference %}
+            <div id="matcher-{{ carte.ordre }}" class="card-pile"></div>
+        {% endfor %}
+    </div>
+
+    {# Les explications #}
+    <div id="explications">
+        <p>
+            Vous avez ici quatre cartes différentes : un triangle rouge, deux étoiles vertes, trois croix jaunes, quatre ronds bleus.
+            <br>
+            Un autre paquet de cartes apparaîtra à la place de ce texte.
+            <br>
+            Pour chaque carte de ce paquet, je vous demande de l'associer, de l'assortir avec l'une des quatre cartes devant vous en fonction d'un critère, d'une règle de votre choix.
+            <br>
+            <br>
+            La particularité du test est que je ne dois pas vous dire quelle est la règle. Je vous demande de la trouver vous-même en essayant les différentes règles possibles.
+            <br>
+            <br>
+            Cependant, chaque fois que vous placerez une carte, je vous dirai 'Oui' ou 'Non'. Si je vous dis 'Oui', vous devez conserver la même règle pour la carte suivante.
+            <br>
+            Si je vous dis 'Non', vous devrez essayer à nouveau cherchant une autre règle pour associer les cartes.
+            <br>
+            <br>
+            Maintenant allez-y, essayez de trouver une règle.
+        </p>
+
+        <div id="btn-go">On y va !</div>
+    </div>
+
+    {# Le résultat affiché  à chaque carte posée #}
+    <div id="result" style="display :none">
+        <div class="right" style="display :none">
+            OUI
+        </div>
+        <div class="wrong" style="display :none">
+            NON
+        </div>
+        <div class="change" style="display :none">
+            CHANGEMENT DE REGLE
+        </div>
+    </div>
+
+    {# Le deck de cartes #}
+    <div id="deck" class="card-container" style="display:none">
+        <div class="card-pile">
+            {% for carte in cartesTirage %}
+                {% include('test/card.html.twig') with {'code': carte.typeCode, 'class': 'flipped'} %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            let cardManager = new CardManager('glisser');
+            cardManager.init();
+        });
+    </script>
+{% endblock %}
