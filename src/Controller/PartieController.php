@@ -38,4 +38,12 @@ class PartieController extends AbstractController
             'cartesTirage' => array_reverse($cartesTirage)
         ]);
     }
+
+    /**
+     * @Route("/admin", name="admin")
+     */
+    public function admin()
+    {
+        return $this->render('admin/admin.html.twig');
+    }
 }
