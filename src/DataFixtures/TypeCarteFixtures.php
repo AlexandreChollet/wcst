@@ -10,6 +10,13 @@ class TypeCarteFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        $cards = $manager->getRepository(TypeCarte::class)->findAll();
+        foreach($cards as $card) {
+            $manager->remove($card);
+        }
+
+        $manager->flush();
+
         $cartesReference = [
             '1TR',
             '2EV',

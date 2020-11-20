@@ -58,7 +58,9 @@ CardManager.prototype.prepareNextCard = function() {
     let nextCards = $('#deck .card');
     if(nextCards.length > 0) {
         let nextCard = $(nextCards[nextCards.length - 1]);
+        nextCard.append('<div class="msg-flip-card">RETOURNEZ LA CARTE</div>');
         nextCard.click(function() {
+            $(this).find('.msg-flip-card').remove();
             self.flipNextCard($(this));
         });
     } else {

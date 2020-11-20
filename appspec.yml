@@ -1,0 +1,18 @@
+# This is an appspec.yml template file for use with an EC2/On-Premises deployment in CodeDeploy.
+# The lines in this template starting with the hashtag symbol are 
+#   instructional comments and can be safely left in the file or 
+#   ignored.
+# For help completing this file, see the "AppSpec File Reference" in the  
+#   "CodeDeploy User Guide" at
+#   https://docs.aws.amazon.com/codedeploy/latest/userguide/app-spec-ref.html
+version: 1.0
+# Specify "os: linux" if this revision targets Amazon Linux, 
+#   Red Hat Enterprise Linux (RHEL), or Ubuntu Server  
+#   instances.
+# Specify "os: windows" if this revision targets Windows Server instances.
+# (You cannot specify both "os: linux" and "os: windows".)
+os: linux
+hooks:
+  AfterInstall:
+    - location: /scripts/deploy.sh
+      timeout: 1200
