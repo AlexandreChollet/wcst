@@ -87,10 +87,6 @@ body {
       }
     }
 
-    &.flipped-forever {
-      opacity: 0.2;
-    }
-
     &.flippable {
       cursor: pointer;
     }
@@ -161,6 +157,17 @@ body {
     &.intersects {
       transition: none;
       box-shadow: 0 0 20px 0 rgba(50, 190, 50, 0.5)
+    }
+  }
+
+  .card-pile {
+    .card {
+      &.flipped-forever {
+        opacity: 0;
+        &:first-child {
+          opacity: 0.2;
+        }
+      }
     }
   }
 }
