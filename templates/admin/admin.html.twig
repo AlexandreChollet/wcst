@@ -44,7 +44,7 @@
                                 {% set erreursPerseveratrices = partie.getErreursPerseveratrices() %}
                                 <td class="number">{{ erreursPerseveratrices|length }}</td>
 
-                                <td class="number">{{ ((erreursPerseveratrices|length / nbErreurs) * 100)|number_format(2) }}%</td>
+                                <td class="number">{{ nbErreurs > 0 ? ((erreursPerseveratrices|length / nbErreurs) * 100)|number_format(2) : 0 }}%</td>
                                 <td class="number">{{ partie.getAbandonsPrematures()|length }}</td>
                                 <td class="number">{{ (partie.tempsNecessaire / 1000)|number_format(2) }}</td>
                             </tr>

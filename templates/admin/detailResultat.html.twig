@@ -25,13 +25,13 @@
                 Tirage / déroulement
             </div>
             <div class="header-infos">
-                {% set firstHalf = partie.choixCartes|slice(0, (partie.choixCartes|length // 2)) %}
-                {% set secondHalf = partie.choixCartes|slice((partie.choixCartes|length // 2), partie.choixCartes|length - 1) %}
+                {% set firstHalf = partie.choixCartes|slice(0, 24) %}
+                {% set secondHalf = partie.choixCartes|slice(24, 48) %}
                 <div class="section">
-                    {% include 'admin/colonneDeroulement.html.twig' with {'listeChoix': firstHalf, 'erreursP': erreursPerseveratrices} %}
+                    {% include 'admin/colonneDeroulement.html.twig' with {'listeChoix': firstHalf, 'erreursP': erreursPerseveratrices, 'dernierNumero': 1} %}
                 </div>
                 <div class="section">
-                    {% include 'admin/colonneDeroulement.html.twig' with {'listeChoix': secondHalf, 'erreursP': erreursPerseveratrices} %}
+                    {% include 'admin/colonneDeroulement.html.twig' with {'listeChoix': secondHalf, 'erreursP': erreursPerseveratrices, 'dernierNumero': 24} %}
                 </div>
             </div>
         </div>
@@ -72,7 +72,7 @@
                     </div>
                     <div class="row">
                         <div class="label">Pourcentage d'erreurs persévératrices :</div>
-                        <div class="value">{{ ((erreursPerseveratrices|length / nbErreurs) * 100)|number_format(2) }}%</div>
+                        <div class="value">{{ nbErreurs > 0 ? ((erreursPerseveratrices|length / nbErreurs) * 100)|number_format(2) : 0 }}%</div>
                     </div>
                 </div>
             </div>

@@ -144,5 +144,11 @@
         text-align: center;
       }
     }
+
+    tr.empty{
+      td{
+        background-color: grey;
+      }
+    }
   }
 }

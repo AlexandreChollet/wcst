@@ -13,6 +13,7 @@
     <tbody>
         {% set ep = erreursP|map(p => p.numero) %}
         {% for choix in listeChoix %}
+            {% set dernierNumero = choix.numero %}
             <tr>
                 <td>{{ choix.numero }}</td>
                 <td>{{ choix.cartePosee.typeCode }}</td>
@@ -47,5 +48,18 @@
                 </td>
             </tr>
         {% endfor %}
+        {% if listeChoix|length < 24 %}
+            {% for i in 0..listeChoix|length - 23 %}
+                <tr class="empty">
+                    <td>{{ dernierNumero - i + 1 }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        {% endif %}
     </tbody>
 </table>
