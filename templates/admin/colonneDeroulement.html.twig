@@ -1,0 +1,51 @@
+<table>
+    <thead>
+        <tr>
+            <th>N°</th>
+            <th>Carte</th>
+            <th>C</th>
+            <th>F</th>
+            <th>N</th>
+            <th>A</th>
+            <th style="width:15%">Réponse <br> (+ / E / EP)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% set ep = erreursP|map(p => p.numero) %}
+        {% for choix in listeChoix %}
+            <tr>
+                <td>{{ choix.numero }}</td>
+                <td>{{ choix.cartePosee.typeCode }}</td>
+                <td>
+                    {% if choix.cartePosee.getMatchedRegle(choix.carteReference) == 'couleur' %}
+                        X
+                    {% endif %}
+                </td>
+                <td>
+                    {% if choix.cartePosee.getMatchedRegle(choix.carteReference) == 'forme' %}
+                        X
+                    {% endif %}
+                </td>
+                <td>
+                    {% if choix.cartePosee.getMatchedRegle(choix.carteReference) == 'nombre' %}
+                        X
+                    {% endif %}
+                </td>
+                <td>
+                    {% if choix.cartePosee.getMatchedRegle(choix.carteReference) == '' %}
+                        X
+                    {% endif %}
+                </td>
+                <td style="width:15%">
+                    {% if choix.isBonneReponse %}
+                        +
+                    {% elseif choix.numero in ep %}
+                        EP
+                    {% else %}
+                        E
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

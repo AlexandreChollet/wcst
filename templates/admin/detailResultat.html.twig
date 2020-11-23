@@ -6,60 +6,79 @@
 {% endblock %}
 
 {% block body %}
+    {# Calcul unique des EP #}
+    {% set erreursPerseveratrices = partie.getErreursPerseveratrices() %}
+
     <div class="wrapper">
         {# Marge universelle #}
         <div class="top-margin"></div>
 
         {# Header #}
         <div class="header">
-            <div class="back" onclick="window.history.back();"><i class="fas fa-arrow-left"></i></div>
-            Détail du résultat
+            <div class="back" title="Revenir à la liste des résultats" onclick="window.history.back();"><i class="fas fa-arrow-left"></i></div>
+            Détail du résultat (envoyé à : {{ partie.date|date('d/m/Y à H:i:s') }})
         </div>
 
-        <div class="titre">
-            Informations sur le test :
+        {# Informations sur le déroulement #}
+        <div id="deroulement" class="detail">
+            <div class="titre">
+                Tirage / déroulement
+            </div>
+            <div class="header-infos">
+                {% set firstHalf = partie.choixCartes|slice(0, (partie.choixCartes|length // 2)) %}
+                {% set secondHalf = partie.choixCartes|slice((partie.choixCartes|length // 2), partie.choixCartes|length - 1) %}
+                <div class="section">
+                    {% include 'admin/colonneDeroulement.html.twig' with {'listeChoix': firstHalf, 'erreursP': erreursPerseveratrices} %}
+                </div>
+                <div class="section">
+                    {% include 'admin/colonneDeroulement.html.twig' with {'listeChoix': secondHalf, 'erreursP': erreursPerseveratrices} %}
+                </div>
+            </div>
         </div>
-        <div class="detail">
+
+        {# Informations de cotation #}
+        <div id="cotation" class="detail">
+            <div class="titre">
+                Cotation
+            </div>
             <div class="header-infos">
                 <div class="section">
                     <div class="row">
-                        <div class="label">Date de l'envoi :</div>
-                        <div class="value">{{ partie.date|date('d/m/Y à H:i:s') }}</div>
+                        <div class="label">Temps écoulé pendant le test (en secondes)</div>
+                        <div class="value">{{ (partie.tempsNecessaire / 1000)|number_format(2) }}</div>
                     </div>
                     <div class="row">
                         <div class="label">Nombre de catégories terminées :</div>
                         <div class="value">{{ partie.changementsRegle|length }}</div>
                     </div>
                     <div class="row">
-                        <div class="label">Nombre de cartes nécessaires pour atteindre les six catégories (soit le total des cartes posées) :</div>
+                        <div class="label">Nombre de cartes nécessaires (soit le total des cartes posées)</div>
                         <div class="value">{{ partie.choixCartes|length }}</div>
                     </div>
-                    {% set nbErreurs = partie.getNbErreurs() %}
                     <div class="row">
-                        <div class="label">Nombre d'erreurs (nombre de 'Non' dits par l'examinateur) :</div>
-                        <div class="value">{{ nbErreurs }}</div>
+                        <div class="label">Nombre d'abandon prématurés du critère</div>
+                        <div class="value">{{ partie.getAbandonsPrematures()|length }}</div>
                     </div>
                 </div>
                 <div class="section">
-                    {% set erreursPerseveratrices = partie.getErreursPerseveratrices() %}
+                    {% set nbErreurs = partie.getNbErreurs() %}
                     <div class="row">
-                        <div class="label">Nombre d'erreurs persévératrices (EP) :</div>
+                        <div class="label">Nombre d'erreurs (nombre de 'Non' dits par l'examinateur)</div>
+                        <div class="value">{{ nbErreurs }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Nombre d'erreurs persévératrices (EP)</div>
                         <div class="value">{{ erreursPerseveratrices|length }}</div>
                     </div>
                     <div class="row">
                         <div class="label">Pourcentage d'erreurs persévératrices :</div>
                         <div class="value">{{ ((erreursPerseveratrices|length / nbErreurs) * 100)|number_format(2) }}%</div>
                     </div>
-                    <div class="row">
-                        <div class="label">Nombre d'abandon prématurés du critère :</div>
-                        <div class="value">{{ partie.getAbandonsPrematures()|length }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="label">Temps écoulé pendant le test (en secondes) :</div>
-                        <div class="value">{{ (partie.tempsNecessaire / 1000)|number_format(2) }}</div>
-                    </div>
                 </div>
             </div>
         </div>
+
+        {# Marge universelle #}
+        <div class="top-margin"></div>
     </div>
 {% endblock %}

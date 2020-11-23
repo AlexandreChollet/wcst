@@ -11,34 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 class TypeCarte
 {
     /**
-     * Formes
-     */
-    const FORME_TRIANGLE    = 'T';
-    const FORME_CROIX       = 'C';
-    const FORME_ROND        = 'R';
-    const FORME_ETOILE      = 'E';
-    const CORRESPONDANCE_FORMES = [
-        self::FORME_TRIANGLE    => 'triangle',
-        self::FORME_CROIX       => 'croix',
-        self::FORME_ROND        => 'rond',
-        self::FORME_ETOILE      => 'etoile'
-    ];
-
-    /**
-     * Couleurs
-     */
-    const COULEUR_ROUGE     = 'R';
-    const COULEUR_BLEU      = 'B';
-    const COULEUR_VERT      = 'V';
-    const COULEUR_JAUNE     = 'J';
-    const CORRESPONDANCE_COULEURS = [
-        self::COULEUR_ROUGE     => 'rouge',
-        self::COULEUR_BLEU      => 'bleu',
-        self::COULEUR_VERT      => 'vert',
-        self::COULEUR_JAUNE     => 'jaune'
-    ];
-
-    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -143,11 +115,11 @@ class TypeCarte
         $codeCarteB = $typeCarte->getTypeCode();
 
         if($codeCarteA[0] === $codeCarteB[0]) {
-            return 'chiffre';
+            return 'nombre';
         }
 
         if($codeCarteA[1] === $codeCarteB[1]) {
-            return 'form';
+            return 'forme';
         }
 
         if($codeCarteA[2] === $codeCarteB[2]) {
