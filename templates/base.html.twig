@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}{% endblock %}</title>
+        <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.ico') }}" />
+        <title>{% block title %}Test{% endblock %}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('appStyle') }}
         {% endblock %}
@@ -12,8 +13,27 @@
         {% endblock %}
     </head>
     <body>
-        <div class="wrapper">
-            {% block body %}{% endblock %}
+        {% block body %}{% endblock %}
+        <div id="nouvelle-regle" class="popup-container ok-container">
+            <div class="overlay"></div>
+            <div class="popup-wrapper">
+                <div class="popup">
+                    <div class="infos">Maintenant la règle change, vous devez trouver une autre règle.</div>
+                    <div id="btn-go" class="btn btn-ok">OK</div>
+                </div>
+            </div>
+        </div>
+        <div id="loader" class="popup-container">
+            <div class="overlay"></div>
+            <div class="popup-wrapper">
+                <div class="popup">
+                    <div class="infos">Fin du test</div>
+                    <div class=" lds-ellipsis">
+                        <div></div><div></div><div></div><div></div>
+                    </div>
+                    <div class="infos">Veuillez patienter</div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -17,7 +17,7 @@ Encore
     //.setManifestKeyPrefix('build/')
 
     .addLoader({
-        test: /\.(svg|png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf)$/,
+        test: /\.(svg|png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf|ico)$/,
         use: [
             {
                 loader: 'file-loader',
@@ -49,6 +49,8 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('cardManager', './assets/js/cards.js')
     .addStyleEntry('appStyle', './assets/styles/app.scss')
+    .addStyleEntry('testStyle', './assets/styles/modules/test.scss')
+    .addStyleEntry('adminStyle', './assets/styles/modules/admin.scss')
     //.addEntry('page1', './assets/page1.js')
     //.addEntry('page2', './assets/page2.js')
 

@@ -27,10 +27,10 @@ class ExceptionListener
      */
     public function onKernelException(ExceptionEvent $event)
     {
-        if (!$event->getThrowable() instanceof NotFoundHttpException) {
-            return;
-        }
-
-        $event->setResponse(new RedirectResponse($this->router->generate('home')));
+//        if (!$event->getThrowable() instanceof NotFoundHttpException) {
+//            return;
+//        }
+//
+//        $event->setResponse(new RedirectResponse($this->router->generate('test')));
     }
 }

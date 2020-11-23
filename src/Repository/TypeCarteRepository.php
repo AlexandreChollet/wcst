@@ -14,10 +14,13 @@ class TypeCarteRepository extends EntityRepository
         $query = $this->createQueryBuilder('tc')
             ->where('tc.isCarteReference = :isReference')
             ->orderBy('tc.ordre')
-            ->setParameter('isReference', $isCarteReference)
-            ->getQuery()
-            ->execute();
+            ->setParameter('isReference', $isCarteReference);
 
-        return $query;
+//        if(!$isCarteReference) {
+//            $query->setMaxResults(48);
+//        }
+
+        return $query->getQuery()
+            ->execute();
     }
 }

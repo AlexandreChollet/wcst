@@ -129,4 +129,31 @@ class TypeCarte
     {
         $this->isCarteReference = $isCarteReference;
     }
+
+    /**
+     * Trouve une règle qui match entre deux cartes
+     *
+     * @param TypeCarte $typeCarte
+     *
+     * @return string
+     */
+    public function getMatchedRegle(TypeCarte $typeCarte)
+    {
+        $codeCarteA = $this->getTypeCode();
+        $codeCarteB = $typeCarte->getTypeCode();
+
+        if($codeCarteA[0] === $codeCarteB[0]) {
+            return 'chiffre';
+        }
+
+        if($codeCarteA[1] === $codeCarteB[1]) {
+            return 'form';
+        }
+
+        if($codeCarteA[2] === $codeCarteB[2]) {
+            return 'couleur';
+        }
+
+        return '';
+    }
 }

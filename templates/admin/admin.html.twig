@@ -1,7 +1,59 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('adminStyle') }}
+{% endblock %}
+
 {% block body %}
-    <div>
-        Bienvenue dans la page admin !
+    <div class="wrapper">
+        {# Marge universelle #}
+        <div class="top-margin"></div>
+
+        {# Header #}
+        <div class="header">Liste des résultats du test</div>
+
+        {# Liste des jeux de test #}
+        <div class="liste-tests">
+            {% if parties is not empty %}
+                <table cellspacing="0">
+                    <thead>
+                        <tr>
+                            <td style="width: 15px;">n°</td>
+                            <td>Date de l'envoi</td>
+                            <td>Catégories terminées</td>
+                            <td>Cartes posées</td>
+                            <td>Erreurs</td>
+                            <td>Erreurs prématurées</td>
+                            <td>Pourcentage d'Err. Prem.</td>
+                            <td>Abandons prématurés</td>
+                            <td>Temps écoulé (secondes)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for partie in parties %}
+                            <tr title="Cliquer pour voir le détail" onclick="document.location = '{{ path('admin-detail-resultat', {'id': partie.id}) }}';">
+                                <td style="width: 15px;">{{ partie.id }}</td>
+                                <td style="width: 20%;">{{ partie.date|date('d/m/Y à H:i:s') }}</td>
+                                <td class="number">{{ partie.changementsRegle|length }}</td>
+                                <td class="number">{{ partie.choixCartes|length }}</td>
+
+                                {% set nbErreurs = partie.getNbErreurs() %}
+                                <td class="number">{{ nbErreurs }}</td>
+
+                                {% set erreursPerseveratrices = partie.getErreursPerseveratrices() %}
+                                <td class="number">{{ erreursPerseveratrices|length }}</td>
+
+                                <td class="number">{{ ((erreursPerseveratrices|length / nbErreurs) * 100)|number_format(2) }}%</td>
+                                <td class="number">{{ partie.getAbandonsPrematures()|length }}</td>
+                                <td class="number">{{ (partie.tempsNecessaire / 1000)|number_format(2) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                Aucun test n'a encore été effectué.
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

@@ -1,0 +1,273 @@
+@import 'assets/styles/variables';
+
+body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.wrapper {
+  background-color: $color-tertiary;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.card-container {
+  margin-top: 5px;
+  text-align: center;
+  width: 100%;
+  height: 25%;
+  max-height: calc(16vh + 7vw);
+  margin-left: auto;
+  margin-right: auto;
+
+  .card {
+    margin: 0 1%;
+    background-color: white;
+    position: relative;
+    display: inline-block;
+    height: calc(100% + 10vw);
+    width: 21%;
+    max-width: 150px;
+    max-height: 100%;
+    border: 1px solid #0000002b;
+    border-radius: 10px;
+    box-shadow: 2px 2px 3px 0 rgba(32, 33, 36, 0.07);
+    z-index: 3;
+
+    .center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translateX(-50%) translateY(-50%);
+      transform: translateX(-50%) translateY(-50%);
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .image-cropper {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      top: 50%;
+      left: 0;
+      text-align: center;
+      transform: translateY(-50%);
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    .overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    &.flipped {
+      background-color: darkgrey !important;
+
+      img {
+        display: none;
+      }
+    }
+
+    &.flipped-forever {
+      opacity: 0.2;
+    }
+
+    &.flippable {
+      cursor: pointer;
+    }
+
+    .msg-flip-card {
+      color: white;
+      font-size: 20px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @media screen and (max-width: 640px) {
+      .msg-flip-card {
+        padding: 20px;
+        width: 100vw;
+        background-color: rgba(255, 255, 255, 0.50);
+      }
+    }
+  }
+
+  .card-pile {
+    border-radius: 10px;
+    display: inline-block;
+    position: relative;
+    max-width: 150px;
+    width: 21%;
+    max-width: 150px;
+    height: 100%;
+    margin: 0 1%;
+
+    .card {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+      margin: 0;
+    }
+  }
+}
+
+#to-match {
+  .card-pile {
+    &.clickable {
+      cursor: pointer;
+    }
+  }
+}
+
+#matchers {
+  margin-top: 5px;
+
+  .card-pile,
+  .card {
+    transition: box-shadow 0.1s;
+
+    &.empty {
+      border: unset;
+      box-shadow: unset;
+    }
+
+    &.highlight {
+      transition: none;
+      box-shadow: 0 0 20px 0 rgba(99, 190, 255, 0.5)
+    }
+
+    &.intersects {
+      transition: none;
+      box-shadow: 0 0 20px 0 rgba(50, 190, 50, 0.5)
+    }
+  }
+}
+
+#deck-card {
+  &.draggable {
+    cursor: grab;
+  }
+}
+
+#deck-card.highlight {
+  &.draggable {
+    cursor: grabbing;
+  }
+
+  box-shadow: 0 0 20px 0 rgba(99, 190, 255, 0.5)
+}
+
+#explications {
+  @media screen and (min-width: 640px) {
+    padding: 1.5% 1.5%;
+  }
+
+  padding: #{$margin-height-consignes} 1.5%;
+  margin-top: 3%;
+  width: 97%;
+  max-width: 666px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+
+  background-color: $color-primary;
+  color: $color-secondary;
+
+  .titre {
+    height: 30px;
+    font-size: 20px;
+    text-align: left;
+
+    @media screen and (max-width: 640px) {
+      text-align: center;
+    }
+  }
+
+  .contenu {
+    overflow: auto;
+    height: 75%;
+    max-height: calc(100vh - (16vh + 7vw) - #{$margin-top} - 44px - #{$margin-height-consignes});
+
+    @media screen and (max-width: 640px) {
+      max-height: calc(100vh - (16vh + 7vw) - 48px - #{$margin-height-consignes});
+    }
+
+    p {
+      text-align: justify;
+    }
+  }
+}
+
+#result {
+  margin: 1.5% 0;
+  min-height: 50px;
+  line-height: 50px;
+  text-align: center;
+
+  div {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+  }
+
+  .right, .wrong {
+    font-size: 25px;
+    font-weight: bold;
+  }
+
+  .right {
+    color: #007b0b;
+  }
+
+  .wrong {
+    color: #ff7c00;
+  }
+
+  img {
+    height: 100%;
+  }
+}
+
+#nouvelle-regle {
+  .popup {
+    width: 100%;
+    max-width: 600px;
+
+    .infos {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+#loader {
+  .popup {
+    width: 200px;
+
+    .infos {
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+}

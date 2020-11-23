@@ -17,9 +17,16 @@ class ChoixCarte
     private $id;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $numero;
+
+    /**
      * @var Partie
      *
-     * @ORM\ManyToOne(targetEntity="TypeCarte", inversedBy="choixCartes")
+     * @ORM\ManyToOne(targetEntity="Partie")
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(referencedColumnName="id")
      * })
@@ -45,6 +52,20 @@ class ChoixCarte
      * })
      */
     private $carteReference;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    private $regleActuelle;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $isBonneReponse;
 
     /**
      * @var integer
@@ -120,5 +141,53 @@ class ChoixCarte
     public function setPartie(Partie $partie): void
     {
         $this->partie = $partie;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegleActuelle(): string
+    {
+        return $this->regleActuelle;
+    }
+
+    /**
+     * @param string $regleActuelle
+     */
+    public function setRegleActuelle(string $regleActuelle): void
+    {
+        $this->regleActuelle = $regleActuelle;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBonneReponse(): bool
+    {
+        return $this->isBonneReponse;
+    }
+
+    /**
+     * @param bool $isBonneReponse
+     */
+    public function setIsBonneReponse(bool $isBonneReponse): void
+    {
+        $this->isBonneReponse = $isBonneReponse;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumero(): int
+    {
+        return $this->numero;
+    }
+
+    /**
+     * @param int $numero
+     */
+    public function setNumero(int $numero): void
+    {
+        $this->numero = $numero;
     }
 }

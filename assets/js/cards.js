@@ -3,11 +3,23 @@ const draggable = require('./draggable.js');
 window.CardManager = function(type) {
     this.type = type;
     this.status = 'off';
-    this.currentRule = '';
+
     this.counter = 0;
     this.counterCorrectAnswer = 0;
     this.counterWrongAnswer = 0;
-    this.rules = ['chiffre', 'forme', 'couleur']
+
+    this.previousRule = '';
+    this.currentRule = '';
+    this.ruleOrder = []
+
+    this.cardTimer = null;
+    this.testTimer = null;
+
+    this.partie = {
+        'tempsNecessaire': null,
+        'choixCartes': [],
+        'changementsRegles': []
+    };
 };
 
 /**
@@ -21,6 +33,17 @@ CardManager.prototype.init = function() {
     $('#btn-go').click(function() {
         self.start();
     });
+
+    $(document).on('click', 'body .card.flippable', function (e) {
+        $(this).toggleClass('flipped');
+        if($(this).hasClass('flippable-once')) {
+            $(this).removeClass('flippable');
+        }
+    });
+
+    $('.btn-ok').click(function() {
+        $(this).closest('.ok-container').hide();
+    });
 };
 
 /**
@@ -29,7 +52,9 @@ CardManager.prototype.init = function() {
 CardManager.prototype.start = function() {
     let self = this;
 
-    $('#explications').remove();
+    this.testTimer = new Date();
+
+    $('#explications').hide();
     $('#deck').show();
     $('#result').show();
 
@@ -58,15 +83,14 @@ CardManager.prototype.prepareNextCard = function() {
     let nextCards = $('#deck .card');
     if(nextCards.length > 0) {
         let nextCard = $(nextCards[nextCards.length - 1]);
-        nextCard.append('<div class="msg-flip-card">CLIQUER POUR RETOURNER</div>');
+        nextCard.append('<div class="msg-flip-card">RETOURNER</div>');
         nextCard.click(function() {
             $(this).find('.msg-flip-card').remove();
             self.flipNextCard($(this));
         });
     } else {
-        // TODO
         // fin de la partie
-        this.status = 'off';
+        this.end();
     }
 
     this.counter++;
@@ -80,13 +104,19 @@ CardManager.prototype.prepareNextCard = function() {
 CardManager.prototype.flipNextCard = function(card) {
     // Gestion du drag and drop sur la carte du deck
     card.attr('id', 'deck-card');
-    card.removeClass('flipped');
+
+    $('#result div').hide();
+    $('#matchers .card-pile .card').addClass('flipped').removeClass('flippable');
+    $('#matchers .card-pile .card').not('.last-card').addClass('flipped-forever')
+    $('.last-card').addClass('flippable').removeClass('flippable-once');
 
     if(this.type === 'glisser') {
         let draggableCard = document.getElementById('deck-card');
         draggableCard.classList.add('draggable');
         draggable(draggableCard, this);
     }
+
+    this.cardTimer = new Date();
 };
 
 /**
@@ -185,6 +215,12 @@ CardManager.prototype.onMouseMove = function() {
  * @param cardMatcher
  */
 CardManager.prototype.placeCard = function(currentDeckCard, cardMatcher) {
+    let diff = (this.cardTimer.getTime() - new Date().getTime());
+
+    // Construction d'une réponse
+    let choixCarte = {};
+    choixCarte.tempsMicrosecondes = Math.abs(diff);
+
     let cardId = cardMatcher.attr('id').replace('matcher-', '');
 
     // Carte déposée en dessous d'une carte de référence
@@ -194,21 +230,47 @@ CardManager.prototype.placeCard = function(currentDeckCard, cardMatcher) {
     card.attr('id', null);
     card.removeClass('highlight draggable');
     cardMatcher.append(card);
+    $('.last-card').removeClass('last-card');
+    card.addClass('last-card');
 
-    // Application des règles du test en fonction de la règle trouvée entre les deux cartes (s'il y en a une)
-    let matchedCard = $('#to-match .card-pile[data-reference=' + cardId + '] .card')
+    // Recherche des règles matchées entre deux cartes
+    let matchedCard = $('#to-match .card-pile[data-reference=' + cardId + '] .card');
     let correct = false;
-    let matchedRule = this.getMatchingRuleBetweenCards(currentDeckCard, matchedCard);
-    if(this.currentRule === '') {
+    let matchedRules = this.getMatchingRulesBetweenCards(currentDeckCard, matchedCard);
+
+    // Deux cartes matcheront toujours une seule règle (le tirage est prévu pour)
+    let matchedRule = matchedRules[0];
+
+    // Application des exigences du test suivant la règle trouvée entre les deux cartes
+    if(this.currentRule === '' && this.partie.choixCartes.length === 0) {
         // Première carte déposée
-        if(matchedRule !== '') {
-            // La règle matchée devient la règle actuelle pour les prochaines cartes
-            correct = true;
-            this.currentRule = matchedRule;
+        // La règle matchée devient la règle actuelle pour les prochaines cartes
+        correct = true;
+        this.currentRule = matchedRule;
+    } else if (this.currentRule === '') {
+        // Nouvelle règle imposée
+        // On vérifie si l'ordre des règles est établie ou pas encore totalement (ex: forme, puis couleur, puis nombre)
+        if(this.ruleOrder.length < 3) {
+            if(matchedRule !== this.previousRule && !this.ruleOrder.includes(matchedRule)) {
+                // Si c'est une règle pas encore établie, on la considère comme correcte
+                this.currentRule = matchedRule;
+                correct = true;
+            }
+        } else {
+            // L'ordre des règles est déjà établie, on est donc au moins au 3ème changement de règle.
+            let matchedRuleOrderIndex = this.ruleOrder.findIndex((element) => element === matchedRule);
+            if(matchedRuleOrderIndex === this.partie.changementsRegles.length - 3) {
+                this.currentRule = matchedRule;
+                correct = true;
+            }
         }
-    } else if (this.currentRule === matchedRule) {
+    } else if (matchedRules.includes(this.currentRule)) {
         correct = true;
     }
+
+    // Sauvegarde du code de la carte de référence et de la carte posée
+    choixCarte.carteReference = matchedCard.attr('data-code');
+    choixCarte.cartePosee = currentDeckCard.attr('data-code');
 
     // Comportement si vrai ou faux
     let right = $('#result .right').hide();
@@ -216,28 +278,43 @@ CardManager.prototype.placeCard = function(currentDeckCard, cardMatcher) {
     let ruleChange = $('#result .change').hide();
     if(correct === true) {
         this.counterCorrectAnswer++;
+        this.counterWrongAnswer = 0;
         right.show();
         wrong.hide();
     } else {
         this.counterWrongAnswer++;
+        this.counterCorrectAnswer = 0;
         wrong.show();
         right.hide();
     }
 
+    // Sauvegarde du si bonne ou mauvaise réponse
+    choixCarte.isBonneReponse = correct;
+    choixCarte.regleActuelle = this.currentRule;
+    this.partie.choixCartes.push(choixCarte);
+
     if(this.counterCorrectAnswer === 6) {
         // Changement de règle
-        let index = this.rules.findIndex(element => this.currentRule === element);
-        this.currentRule = this.rules[index === this.rules.length - 1 ? 0 : index + 1];
+        this.partie.changementsRegles.push({'index': this.partie.choixCartes.length + 1, 'lastRule': this.lastRule, 'rule': this.currentRule});
+
+        let lastRule = this.currentRule;
+        if(this.ruleOrder.length < 3) {
+            this.ruleOrder.push(lastRule)
+        }
+
         this.counterCorrectAnswer = 0;
-        console.log(this.currentRule)
-        right.hide();
-        ruleChange.show();
+        $('#nouvelle-regle').show();
+
+        this.currentRule = '';
     }
 
     if(this.counterWrongAnswer === 6) {
         // TODO ré-affichage des règles
         this.counterWrongAnswer = 0;
+    }
 
+    if(this.partie.changementsRegles.length === 6) {
+        this.end();
     }
 
     // On passe la main à la carte suivante
@@ -270,18 +347,41 @@ CardManager.prototype.intersects = function(el1, el2) {
  * @param cardOne
  * @param cardTwo
  */
-CardManager.prototype.getMatchingRuleBetweenCards = function(cardOne, cardTwo) {
+CardManager.prototype.getMatchingRulesBetweenCards = function(cardOne, cardTwo) {
     let codeFirstCard = cardOne.attr('data-code');
     let codeSecondCard = cardTwo.attr('data-code');
 
+    let matchedRules = [];
+
     if(codeFirstCard[0] === codeSecondCard[0]){
-        return 'chiffre';
+        matchedRules.push('nombre');
     }
     if(codeFirstCard[1] === codeSecondCard[1]){
-        return 'forme';
+        matchedRules.push('forme');
     }
     if(codeFirstCard[2] === codeSecondCard[2]){
-        return 'couleur';
+        matchedRules.push('couleur');
     }
-    return '';
+    return matchedRules;
+};
+
+/**
+ * Fin du test en envoie des données en bdd
+ */
+CardManager.prototype.end = function() {
+    let diff = (this.testTimer.getTime() - new Date().getTime());
+    this.partie.tempsNecessaire = Math.abs(diff);
+
+    $('#nouvelle-regle').hide();
+    $("#loader").show();
+    console.log(this.partie)
+
+    self.currentRequest = $.ajax({
+        url: '/save-test',
+        data: {'partie': this.partie},
+        type: 'POST',
+        complete: function(response) {
+            window.location = response.responseText;
+        }
+    });
 };

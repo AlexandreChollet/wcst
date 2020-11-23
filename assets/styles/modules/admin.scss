@@ -1,0 +1,90 @@
+@import 'assets/styles/variables';
+
+.wrapper {
+  width: 60%;
+  min-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header {
+  text-align: center;
+  padding: 20px;
+  background-color: #4e80b3;
+  color: white;
+  font-size: 20px;
+  position: relative;
+
+  .back {
+    cursor: pointer;
+    position: absolute;
+    font-size: 40px;
+    left: 20px;
+    height: 45px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+table {
+  width: 100%;
+  border-width: 1px;
+  border-color: grey;
+  border-style: solid;
+
+  tbody {
+    tr {
+      &:hover {
+        cursor: pointer;
+        background-color: aliceblue;
+      }
+    }
+  }
+
+  tr {
+    td {
+      width: calc(100% / 9);
+      border-width: 1px;
+      border-color: grey;
+      border-style: solid;
+      padding:5px;
+
+      &.number {
+        text-align :right;
+      }
+    }
+  }
+}
+
+.detail {
+  .titre {
+
+  }
+
+  .header-infos {
+    overflow: auto;
+    border: 2px solid #4e80b3;
+
+    .section {
+      display: inline-block;
+      width: 49%;
+      float: left;
+      padding: 5px;
+
+      .row {
+        padding: 10px;
+
+        div {
+          display: inline-block;
+        }
+        .label {
+          width: 67%;
+        }
+        .value {
+          width: 30%;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
