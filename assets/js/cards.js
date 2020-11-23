@@ -236,36 +236,37 @@ CardManager.prototype.placeCard = function(currentDeckCard, cardMatcher) {
     // Recherche des règles matchées entre deux cartes
     let matchedCard = $('#to-match .card-pile[data-reference=' + cardId + '] .card');
     let correct = false;
-    let matchedRules = this.getMatchingRulesBetweenCards(currentDeckCard, matchedCard);
 
     // Deux cartes matcheront toujours une seule règle (le tirage est prévu pour)
-    let matchedRule = matchedRules[0];
+    let matchedRule = this.getMatchingRulesBetweenCards(currentDeckCard, matchedCard);
 
     // Application des exigences du test suivant la règle trouvée entre les deux cartes
-    if(this.currentRule === '' && this.partie.choixCartes.length === 0) {
-        // Première carte déposée
-        // La règle matchée devient la règle actuelle pour les prochaines cartes
-        correct = true;
-        this.currentRule = matchedRule;
-    } else if (this.currentRule === '') {
-        // Nouvelle règle imposée
-        // On vérifie si l'ordre des règles est établie ou pas encore totalement (ex: forme, puis couleur, puis nombre)
-        if(this.ruleOrder.length < 3) {
-            if(matchedRule !== this.previousRule && !this.ruleOrder.includes(matchedRule)) {
-                // Si c'est une règle pas encore établie, on la considère comme correcte
-                this.currentRule = matchedRule;
-                correct = true;
+    if(matchedRule !== '') {
+        if(this.currentRule === '' && this.partie.choixCartes.length === 0) {
+            // Première carte déposée
+            // La règle matchée devient la règle actuelle pour les prochaines cartes
+            correct = true;
+            this.currentRule = matchedRule;
+        } else if (this.currentRule === '') {
+            // Nouvelle règle imposée
+            // On vérifie si l'ordre des règles est établie ou pas encore totalement (ex: forme, puis couleur, puis nombre)
+            if(this.ruleOrder.length < 3) {
+                if(matchedRule !== this.previousRule && !this.ruleOrder.includes(matchedRule)) {
+                    // Si c'est une règle pas encore établie, on la considère comme correcte
+                    this.currentRule = matchedRule;
+                    correct = true;
+                }
+            } else {
+                // L'ordre des règles est déjà établie, on est donc au moins au 3ème changement de règle.
+                let matchedRuleOrderIndex = this.ruleOrder.findIndex((element) => element === matchedRule);
+                if(matchedRuleOrderIndex === this.partie.changementsRegles.length - 3) {
+                    this.currentRule = matchedRule;
+                    correct = true;
+                }
             }
-        } else {
-            // L'ordre des règles est déjà établie, on est donc au moins au 3ème changement de règle.
-            let matchedRuleOrderIndex = this.ruleOrder.findIndex((element) => element === matchedRule);
-            if(matchedRuleOrderIndex === this.partie.changementsRegles.length - 3) {
-                this.currentRule = matchedRule;
-                correct = true;
-            }
+        } else if (matchedRule === this.currentRule) {
+            correct = true;
         }
-    } else if (matchedRules.includes(this.currentRule)) {
-        correct = true;
     }
 
     // Sauvegarde du code de la carte de référence et de la carte posée
@@ -351,18 +352,16 @@ CardManager.prototype.getMatchingRulesBetweenCards = function(cardOne, cardTwo) 
     let codeFirstCard = cardOne.attr('data-code');
     let codeSecondCard = cardTwo.attr('data-code');
 
-    let matchedRules = [];
-
     if(codeFirstCard[0] === codeSecondCard[0]){
-        matchedRules.push('nombre');
+        return 'nombre';
     }
     if(codeFirstCard[1] === codeSecondCard[1]){
-        matchedRules.push('forme');
+        return 'forme';
     }
     if(codeFirstCard[2] === codeSecondCard[2]){
-        matchedRules.push('couleur');
+        return 'couleur';
     }
-    return matchedRules;
+    return '';
 };
 
 /**
