@@ -27,11 +27,14 @@ window.CardManager = function(type) {
  */
 CardManager.prototype.init = function() {
     let self = this;
-    self.status = 'on';
 
     // Lancement de la partie
-    $('#btn-go').click(function() {
-        self.start();
+    $('.btn-go').click(function() {
+        self.toggleConsignes();
+
+        if(self.status === 'off') {
+            self.start();
+        }
     });
 
     $(document).on('click', 'body .card.flippable', function (e) {
@@ -53,10 +56,7 @@ CardManager.prototype.start = function() {
     let self = this;
 
     this.testTimer = new Date();
-
-    $('#explications').hide();
-    $('#deck').show();
-    $('#result').show();
+    self.status = 'on';
 
     if(this.type === 'click') {
         $('#to-match .card-pile').addClass('clickable').click(function() {
@@ -69,7 +69,6 @@ CardManager.prototype.start = function() {
     } else {
         //$('#matchers').show();
     }
-    $('#matchers').show();
 
     this.prepareNextCard();
 };
@@ -310,8 +309,8 @@ CardManager.prototype.placeCard = function(currentDeckCard, cardMatcher) {
     }
 
     if(this.counterWrongAnswer === 6) {
-        // TODO ré-affichage des règles
         this.counterWrongAnswer = 0;
+        this.toggleConsignes();
     }
 
     if(this.partie.changementsRegles.length === 6) {
@@ -368,6 +367,7 @@ CardManager.prototype.getMatchingRulesBetweenCards = function(cardOne, cardTwo) 
  * Fin du test en envoie des données en bdd
  */
 CardManager.prototype.end = function() {
+    self.status = 'off';
     let diff = (this.testTimer.getTime() - new Date().getTime());
     this.partie.tempsNecessaire = Math.abs(diff);
 
@@ -383,4 +383,19 @@ CardManager.prototype.end = function() {
             window.location = response.responseText;
         }
     });
+};
+
+/**
+ * Affichage / cache les règles
+ */
+CardManager.prototype.toggleConsignes = function() {
+    $('#explications').toggle();
+    $('#deck').toggle();
+    $('#result').toggle();
+    $('#matchers').toggle();
+
+    if(this.status === 'on') {
+        $('#explications').find('.consignes, .btn-start').hide();
+        $('#explications').find('.rappel, .btn-ok').show();
+    }
 };
