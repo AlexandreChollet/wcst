@@ -243,9 +243,11 @@ class Partie
 
                 // On ignore si la réponse précédente était un changement de règle
                 $ignore = false;
-                foreach($this->changementsRegle as $changement) {
-                    if($changement['index'] == $choixPrecedent->getNumero()) {
-                        $ignore = true;
+                if(is_array($this->changementsRegle)) {
+                    foreach($this->changementsRegle as $changement) {
+                        if($changement['index'] == $choixPrecedent->getNumero()) {
+                            $ignore = true;
+                        }
                     }
                 }
 

@@ -37,3 +37,7 @@
 .dataTables_length{
   margin: 5px 5px 0px 5px !important;
 }
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: unset;
+}
