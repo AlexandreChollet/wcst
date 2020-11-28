@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('adminStyle') }}
+    {{ encore_entry_link_tags('adminDetailStyle') }}
 {% endblock %}
 
 {% block body %}
@@ -19,36 +20,19 @@
             Détail du résultat (envoyé à : {{ partie.date|date('d/m/Y à H:i:s') }})
         </div>
 
-        {# Informations sur le déroulement #}
-        <div id="deroulement" class="detail">
-            <div class="titre">
-                Tirage / déroulement
-            </div>
-            <div class="header-infos">
-                {% set firstHalf = partie.choixCartes|slice(0, 24) %}
-                {% set secondHalf = partie.choixCartes|slice(24, 48) %}
-                <div class="section">
-                    {% include 'admin/colonneDeroulement.html.twig' with {'listeChoix': firstHalf, 'erreursP': erreursPerseveratrices, 'dernierNumero': 1} %}
-                </div>
-                <div class="section">
-                    {% include 'admin/colonneDeroulement.html.twig' with {'listeChoix': secondHalf, 'erreursP': erreursPerseveratrices, 'dernierNumero': 24} %}
-                </div>
-            </div>
-        </div>
-
         {# Informations de cotation #}
         <div id="cotation" class="detail">
             <div class="titre">
                 Cotation
             </div>
-            <div class="header-infos">
+            <div class="detail-block">
                 <div class="section">
                     <div class="row">
                         <div class="label">Temps écoulé pendant le test (en secondes)</div>
                         <div class="value">{{ (partie.tempsNecessaire / 1000)|number_format(2) }}</div>
                     </div>
                     <div class="row">
-                        <div class="label">Nombre de catégories terminées :</div>
+                        <div class="label">Nombre de catégories terminées</div>
                         <div class="value">{{ partie.changementsRegle|length }}</div>
                     </div>
                     <div class="row">
@@ -60,6 +44,7 @@
                         <div class="value">{{ partie.getAbandonsPrematures()|length }}</div>
                     </div>
                 </div>
+                <div class="section-divider"></div>
                 <div class="section">
                     {% set nbErreurs = partie.getNbErreurs() %}
                     <div class="row">
@@ -71,9 +56,27 @@
                         <div class="value">{{ erreursPerseveratrices|length }}</div>
                     </div>
                     <div class="row">
-                        <div class="label">Pourcentage d'erreurs persévératrices :</div>
+                        <div class="label">Pourcentage d'erreurs persévératrices</div>
                         <div class="value">{{ nbErreurs > 0 ? ((erreursPerseveratrices|length / nbErreurs) * 100)|number_format(2) : 0 }}%</div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        {# Informations sur le déroulement #}
+        <div id="deroulement" class="detail">
+            <div class="titre">
+                Tirage / déroulement
+            </div>
+            <div class="detail-block">
+                {% set firstHalf = partie.choixCartes|slice(0, 24) %}
+                {% set secondHalf = partie.choixCartes|slice(24, 48) %}
+                <div class="section">
+                    {% include 'admin/colonneDeroulement.html.twig' with {'listeChoix': firstHalf, 'erreursP': erreursPerseveratrices, 'dernierNumero': 1} %}
+                </div>
+                <div class="section-divider"></div>
+                <div class="section">
+                    {% include 'admin/colonneDeroulement.html.twig' with {'listeChoix': secondHalf, 'erreursP': erreursPerseveratrices, 'dernierNumero': 24} %}
                 </div>
             </div>
         </div>

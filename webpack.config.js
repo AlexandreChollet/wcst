@@ -51,6 +51,8 @@ Encore
     .addStyleEntry('appStyle', './assets/styles/app.scss')
     .addStyleEntry('testStyle', './assets/styles/modules/test.scss')
     .addStyleEntry('adminStyle', './assets/styles/modules/admin.scss')
+    .addStyleEntry('adminListeStyle', './assets/styles/modules/admin/adminListe.scss')
+    .addStyleEntry('adminDetailStyle', './assets/styles/modules/admin/adminDetail.scss')
     //.addEntry('page1', './assets/page1.js')
     //.addEntry('page2', './assets/page2.js')
 

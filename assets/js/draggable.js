@@ -22,6 +22,7 @@ module.exports =  function (element, context) {
         mouseX = event.clientX;
         mouseY = event.clientY;
         isMouseDown = true;
+        element.removeEventListener('mousedown', onMouseDown);
     }
     element.addEventListener('touchstart', function(e) {
         context.onMouseDown();
@@ -30,7 +31,8 @@ module.exports =  function (element, context) {
         mouseX = touchElement.clientX;
         mouseY = touchElement.clientY;
         isMouseDown = true;
-    });
+        element.removeEventListener('touchstart', this)
+    }, {passive: true});
 
     // mouse button released
     element.addEventListener('mouseup', onMouseUp);
@@ -45,13 +47,15 @@ module.exports =  function (element, context) {
         elementX = 0;
         elementY = 0;
         isMouseDown = false;
+        element.removeEventListener('mouseup', onMouseUp);
     }
     element.addEventListener('touchend', function(e) {
         context.onMouseUp();
         elementX = 0;
         elementY = 0;
         isMouseDown = false;
-    });
+        element.removeEventListener('touchend', this)
+    }, {passive: true});
 
     // need to attach to the entire document
     // in order to take full width and height
@@ -82,5 +86,5 @@ module.exports =  function (element, context) {
         element.style.top = elementY + deltaY + 'px';
 
         context.onMouseMove();
-    });
+    }, {passive: true});
 };

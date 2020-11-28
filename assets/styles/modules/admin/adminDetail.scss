@@ -1,0 +1,103 @@
+#infos {
+  .titre {
+    background-color: rgba(0, 150, 202, 0.59);
+  }
+  .header-infos {
+    border: 2px solid rgba(0, 150, 202, 0.59);
+  }
+}
+
+.detail {
+  margin-top: 5px;
+
+  .titre {
+    padding: 10px;
+    color: #4e80b3;
+    font-size: 20px;
+    border-bottom: 1px solid lightgrey;
+  }
+
+  .detail-block {
+    padding: 5px;
+    overflow: hidden;
+    display: flex;
+    align-items: stretch;
+
+    .section {
+      display: inline-block;
+      width: 49%;
+      float: left;
+    }
+
+    .section-divider {
+      display: inline-block;
+      width: 2%;
+      float: left;
+    }
+
+    .row {
+      width: calc(100% - 20px);
+      padding: 5px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+
+      div {
+        display: inline-block;
+        padding-bottom: 2px;
+      }
+      .label {
+        width: 80%;
+      }
+      .value {
+        width: 19%;
+        text-align: right;
+        font-weight: bold;
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+
+    tr {
+      td {
+        border-width: 1px;
+        border-color: black;
+        border-style: solid;
+        padding:3px;
+        text-align: center;
+      }
+    }
+
+    tr.empty{
+      td{
+        background-color: lightgrey;
+      }
+    }
+
+    .choix {
+      color: grey;
+    }
+
+    .reponse {
+      font-weight: bold;
+    }
+
+    .erreur {
+      color: orangered;
+    }
+    .ep {
+      color: darkred;
+    }
+  }
+}
+
+.sort{
+  padding: 5px;
+
+  .label-sort, .input{
+    display: inline-block;
+  }
+}

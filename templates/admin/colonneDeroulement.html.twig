@@ -1,13 +1,13 @@
 <table>
     <thead>
         <tr>
-            <th>N°</th>
-            <th>Carte</th>
-            <th>C</th>
-            <th>F</th>
-            <th>N</th>
-            <th>A</th>
-            <th style="width:15%">Réponse <br> (+ / E / EP)</th>
+            <th style="width:7%">N°</th>
+            <th style="width:15%">Carte</th>
+            <th style="width:10%">C</th>
+            <th style="width:10%">F</th>
+            <th style="width:10%">N</th>
+            <th style="width:10%">A</th>
+            <th style="width:20%">Réponse <br> (+ / E / EP)</th>
         </tr>
     </thead>
     <tbody>
@@ -17,33 +17,33 @@
             <tr>
                 <td>{{ choix.numero }}</td>
                 <td>{{ choix.cartePosee.typeCode }}</td>
-                <td>
+                <td class="choix">
                     {% if choix.cartePosee.getMatchedRegle(choix.carteReference) == 'couleur' %}
-                        X
+                        <i class="fas fa-times"></i>
                     {% endif %}
                 </td>
-                <td>
+                <td class="choix">
                     {% if choix.cartePosee.getMatchedRegle(choix.carteReference) == 'forme' %}
-                        X
+                        <i class="fas fa-times"></i>
                     {% endif %}
                 </td>
-                <td>
+                <td class="choix">
                     {% if choix.cartePosee.getMatchedRegle(choix.carteReference) == 'nombre' %}
-                        X
+                        <i class="fas fa-times"></i>
                     {% endif %}
                 </td>
-                <td>
+                <td class="choix">
                     {% if choix.cartePosee.getMatchedRegle(choix.carteReference) == '' %}
-                        X
+                        <i class="fas fa-times"></i>
                     {% endif %}
                 </td>
-                <td style="width:15%">
+                <td class="reponse">
                     {% if choix.isBonneReponse %}
                         +
                     {% elseif choix.numero in ep %}
-                        EP
+                        <span class="ep">EP</span>
                     {% else %}
-                        E
+                        <span class="erreur">E</span>
                     {% endif %}
                 </td>
             </tr>

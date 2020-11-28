@@ -1,0 +1,39 @@
+@import '../../../../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css';
+@import '../../../../node_modules/bootstrap/scss/bootstrap';
+
+.liste-tests {
+  table {
+    width: 100%;
+    margin-top: 0 !important;
+
+    tbody {
+      tr {
+        border-bottom: 1px lightgrey solid;
+        &:hover {
+          cursor: pointer;
+          background-color: aliceblue;
+        }
+      }
+    }
+
+    tr {
+      td {
+        width: calc(100% / 9);
+        //border-width: 1px;
+        //border-color: grey;
+        //border-style: solid;
+        //padding:5px;
+        padding: 0.33rem !important;
+
+        &.number {
+          text-align :right;
+        }
+      }
+    }
+  }
+}
+
+// Librarie DataTable
+.dataTables_length{
+  margin: 5px 5px 0px 5px !important;
+}

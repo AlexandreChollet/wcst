@@ -11,6 +11,10 @@ body {
   margin: 0;
   height: 100vh;
 
+  @media screen and (max-width: 640px) {
+    height: 95vh;
+  }
+
   .top-margin {
     margin-top: #{$margin-top};
 

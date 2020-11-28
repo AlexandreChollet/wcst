@@ -218,7 +218,7 @@ body {
     max-height: calc(100vh - (16vh + 7vw) - #{$margin-top} - 44px - #{$margin-height-consignes});
 
     @media screen and (max-width: 640px) {
-      max-height: calc(100vh - (16vh + 7vw) - 48px - #{$margin-height-consignes});
+      max-height: calc(95vh - (16vh + 7vw) - 48px - #{$margin-height-consignes});
     }
 
     p {
