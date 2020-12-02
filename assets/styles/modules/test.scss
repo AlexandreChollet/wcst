@@ -188,13 +188,13 @@ body {
 
 #explications {
   @media screen and (min-width: 640px) {
-    padding: 1.5% 1.5%;
+    padding: 1.25%;
   }
 
   padding: #{$margin-height-consignes} 1.5%;
   margin-top: 1.75%;
   width: 97%;
-  max-width: 666px;
+  max-width: 800px;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
@@ -215,6 +215,7 @@ body {
   }
 
   .contenu {
+    font-size: 0.95em;
     overflow: auto;
     height: 75%;
     max-height: calc(100vh - (16vh + 7vw) - #{$margin-top} - 44px - #{$margin-height-consignes});
