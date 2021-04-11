@@ -6,7 +6,6 @@ use App\Entity\Partie;
 use App\Service\CarteService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -49,6 +48,9 @@ class AdminController extends AbstractController
      * @Route("/admin/resultat/{id}", name="admin-detail-resultat", methods={"GET"})
      *
      * @ParamConverter("partie", class="App\Entity\Partie")
+     * @param Partie $partie
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function detailsResultat(Partie $partie)
     {

@@ -21,6 +21,11 @@ $(document).ready(function() {
                 "next":       "Suivant",
                 "previous":   "Précédent"
             }
-        }
+        },
+        columnDefs: [
+            {
+                type: 'date-euro', targets: 1
+            }
+        ]
     });
 });
