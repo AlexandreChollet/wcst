@@ -3,7 +3,7 @@
 
 .liste-tests {
   table {
-    width: 100%;
+    width: 100% !important;
     margin-top: 0 !important;
 
     tbody {
@@ -40,4 +40,25 @@
 
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: unset;
+}
+
+@media only screen and (max-width : 768px) {
+  table {
+    padding: 0 3%;
+
+    thead tr {
+      td:nth-child(n-2) {
+        border-top: unset !important;
+        border-bottom: unset;
+      }
+    }
+  }
+
+  .row {
+    padding-top: 5px;
+  }
+
+  .liste-tests {
+    margin-bottom: 25px;
+  }
 }
