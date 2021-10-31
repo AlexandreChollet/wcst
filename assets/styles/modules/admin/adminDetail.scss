@@ -58,6 +58,23 @@
         font-weight: bold;
       }
     }
+
+    @media only screen and (max-width : 768px) {
+      flex-direction: column;
+
+      .section {
+        width: 100%;
+
+        .row .value {
+          width: 10%;
+          vertical-align: top;
+        }
+      }
+
+      .section-divider {
+        display: none;
+      }
+    }
   }
 
   table {

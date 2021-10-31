@@ -17,7 +17,8 @@
         {# Header #}
         <div class="header">
             <div class="back" title="Revenir à la liste des résultats" onclick="window.history.back();"><i class="fas fa-arrow-left"></i></div>
-            Détail du résultat (envoyé à : {{ partie.date|date('d/m/Y à H:i:s') }})
+            <span class="hide-m">Détail du résultat (envoyé à : {{ partie.date|date('d/m/Y à H:i:s') }})</span>
+            <span class="show-m">{{ partie.date|date('d/m/Y à H:i:s') }}</span>
         </div>
 
         {# Détail #}
